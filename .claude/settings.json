@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(redis-cli ping *)",
+      "Bash(timeout 3 bash -c 'exec 3<>/dev/tcp/127.0.0.1/6379')",
+      "Bash(timeout 5 docker ps)",
+      "Bash(node -e ' *)",
+      "Bash(git -C /home/hasan/Workspace/job-queue-engine status --short)",
+      "Bash(git -C /home/hasan/Workspace/job-queue-engine branch --show-current)",
+      "Bash(git -C /home/hasan/Workspace/job-queue-engine remote -v)",
+      "Bash(git -C /home/hasan/Workspace/job-queue-engine log --oneline -5)",
+      "Bash(gh auth *)",
+      "Bash(git rm *)",
+      "Bash(git check-ignore *)",
+      "Bash(ls -la /home/hasan/Workspace/job-queue-engine/.claude/; echo \"=== removing tmp from disk if it's a leftover ===\"; rm -f /home/hasan/Workspace/job-queue-engine/.claude/settings.json.tmp.* 2>&1; echo \"done\")"
+    ],
+    "additionalDirectories": [
+      "/home/hasan/Workspace/job-queue-engine/.claude"
+    ]
+  }
+}
