@@ -19,7 +19,8 @@
       "Bash(echo \"global: name=$\\(git config --global user.name 2>/dev/null\\) email=$\\(git config --global user.email 2>/dev/null\\)\")",
       "Bash(git remote *)",
       "Bash(echo \"local:  $\\(git config --local user.email\\)\")",
-      "Bash(echo \"global: $\\(git config --global user.email 2>/dev/null || echo '\\(none\\)'\\)\")"
+      "Bash(echo \"global: $\\(git config --global user.email 2>/dev/null || echo '\\(none\\)'\\)\")",
+      "Bash(npx jest *)"
     ],
     "additionalDirectories": [
       "/home/hasan/Workspace/job-queue-engine/.claude"

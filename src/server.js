@@ -38,5 +38,13 @@ app.post('/jobs', async (req, res) => {
   res.status(201).json({ id: job.id, status: job.status });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`[server] listening on http://localhost:${PORT}`));
+// Only start listening when this file is run directly (`node src/server.js`).
+// When a test `require`s this file, require.main is the test runner, not us, so we
+// skip listen() and just hand back `app` — supertest can drive it in-process without
+// binding a real port.
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`[server] listening on http://localhost:${PORT}`));
+}
+
+module.exports = app;

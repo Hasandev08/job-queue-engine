@@ -6,6 +6,10 @@ const redis = require('../redis');
 const { jobKey, deserialize, serialize, JOB_STATUS } = require('../job');
 const { KEYS } = require('../queue');
 
+// How many seconds BRPOP blocks waiting for a job before returning empty and looping.
+// Configurable so tests can use a tiny value (e.g. 0.2s) instead of waiting 5s.
+const BLOCK_SECONDS = Number(process.env.WORKER_BLOCK_SECONDS) || 5;
+
 // Placeholder "processor". Real per-type handlers come in a later phase; for now we
 // just prove the job travelled producer -> Redis -> worker with its data intact.
 async function handle(job) {
@@ -16,7 +20,7 @@ async function handle(job) {
 async function processOnce() {
   // BRPOP = Blocking Right POP. It waits up to `timeout` seconds for an id to appear,
   // sleeping instead of busy-polling. Returns [listKey, value], or null on timeout.
-  const popped = await redis.brpop(KEYS.READY, 5);
+  const popped = await redis.brpop(KEYS.READY, BLOCK_SECONDS);
   if (!popped) return; // nothing arrived in the window; caller will loop again
   const [, id] = popped; // we only care about the value (the job id)
 
@@ -53,4 +57,10 @@ async function main() {
   }
 }
 
-main();
+// Run the forever-loop only when launched directly (`node src/workers/worker.js`).
+// Tests import processOnce() and drive a single cycle instead of an endless loop.
+if (require.main === module) {
+  main();
+}
+
+module.exports = { processOnce, handle };
