@@ -1,5 +1,7 @@
 const express = require('express');
 const redis = require('./redis'); // the shared client from redis.js
+const { createJob } = require('./job');
+const { enqueue } = require('./queue');
 
 const app = express();
 
@@ -20,6 +22,20 @@ app.get('/health', async (req, res) => {
     // everything is fine.
     res.status(503).json({ ok: false, error: err.message });
   }
+});
+
+// Produce a job. The HTTP request returns as soon as the job is durably in Redis —
+// it does NOT wait for the job to run. That decoupling (accept fast, process later)
+// is the whole point of a queue.
+app.post('/jobs', async (req, res) => {
+  const { type, payload, priority, maxAttempts } = req.body || {};
+  if (!type) return res.status(400).json({ error: 'type is required' });
+
+  const job = createJob(type, payload, { priority, maxAttempts });
+  await enqueue(job);
+
+  // 201 Created + the id, so the caller can look the job up later.
+  res.status(201).json({ id: job.id, status: job.status });
 });
 
 const PORT = process.env.PORT || 3000;

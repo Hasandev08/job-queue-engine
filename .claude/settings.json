@@ -12,7 +12,14 @@
       "Bash(gh auth *)",
       "Bash(git rm *)",
       "Bash(git check-ignore *)",
-      "Bash(ls -la /home/hasan/Workspace/job-queue-engine/.claude/; echo \"=== removing tmp from disk if it's a leftover ===\"; rm -f /home/hasan/Workspace/job-queue-engine/.claude/settings.json.tmp.* 2>&1; echo \"done\")"
+      "Bash(ls -la /home/hasan/Workspace/job-queue-engine/.claude/; echo \"=== removing tmp from disk if it's a leftover ===\"; rm -f /home/hasan/Workspace/job-queue-engine/.claude/settings.json.tmp.* 2>&1; echo \"done\")",
+      "Bash(git commit *)",
+      "Bash(git config *)",
+      "Bash(echo \"local:  $\\(git config --local user.name\\) <$\\(git config --local user.email\\)>\")",
+      "Bash(echo \"global: name=$\\(git config --global user.name 2>/dev/null\\) email=$\\(git config --global user.email 2>/dev/null\\)\")",
+      "Bash(git remote *)",
+      "Bash(echo \"local:  $\\(git config --local user.email\\)\")",
+      "Bash(echo \"global: $\\(git config --global user.email 2>/dev/null || echo '\\(none\\)'\\)\")"
     ],
     "additionalDirectories": [
       "/home/hasan/Workspace/job-queue-engine/.claude"
